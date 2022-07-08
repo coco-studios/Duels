@@ -376,9 +376,10 @@ party:
   # default: 30
   invite-expiration: 30
 
-  # If the party owner is offline for the time (in minutes) specified below, the party will be automatically disbanded. Set to -1 to disable.
+  # If a party member is offline for the time (in minutes) specified below, they will automatically be kicked from the party.
+  # Should that party member also be the owner of the party, ownership will shift to the next person.
   # default: 10
-  auto-disband-after: 10
+  auto-kick-after: 10
 
   # The max size a party can have.
   # default: 10

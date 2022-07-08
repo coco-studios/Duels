@@ -392,8 +392,13 @@ COMMAND:
       send:
         receiver: 
         - '{LINE}'
-        - '{PREFIX} &7Party invite received from &f%name%&7. Type &f/party accept %name% &7to join the party.'
-        - '{LINE}'
+        - '{PREFIX} &7Party invite received from &f%name%&7.'
+        clickable-text:
+          accept:
+            text:
+            - ' &a&l[ACCEPT]'
+            - '{LINE}'
+            hover-text: '&7Click to &aaccept &7this request.'
         members: 
         - '{LINE}'
         - '{PREFIX} &f%owner% &7has invited &f%name% &7to the party!'
@@ -496,9 +501,13 @@ DUEL:
 
 
 PARTY:
-  auto-disband:
+  inactivity-kick:
   - '{LINE}'
-  - '{PREFIX} &7The party has been automatically disbanded due to inactivity.'
+  - '{PREFIX} &f%name% &7was kicked from the party for inactivity.'
+  - '{LINE}'
+  inactivity-kick-new-owner:
+  - '{LINE}'
+  - '{PREFIX} &7The party owner &f%old_owner% &7was kicked from the party for inactivity, new owner: &f%new_owner%&7.'
   - '{LINE}'
 
 

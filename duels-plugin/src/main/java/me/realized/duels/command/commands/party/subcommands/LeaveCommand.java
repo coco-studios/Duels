@@ -1,12 +1,11 @@
 package me.realized.duels.command.commands.party.subcommands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.command.BaseCommand;
 import me.realized.duels.party.Party;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class LeaveCommand extends BaseCommand {
 

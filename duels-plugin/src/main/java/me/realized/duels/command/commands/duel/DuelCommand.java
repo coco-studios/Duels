@@ -66,13 +66,6 @@ public class DuelCommand extends BaseCommand {
             return false;
         }
 
-        final Party party = partyManager.get(player);
-        final Collection<Player> players = party == null ? Collections.singleton(player) : party.getOnlineMembers();
- 
-        if (!ValidatorUtil.validate(validatorManager.getDuelSelfValidators(), player, party, players)) {
-            return true;
-        }
-
         final Player target = Bukkit.getPlayerExact(args[0]);
 
         if (target == null || !player.canSee(target)) {
@@ -80,7 +73,14 @@ public class DuelCommand extends BaseCommand {
             return true;
         }
 
-        final Party targetParty = partyManager.get(target);
+        final Party party = partyManager.isInParty(target) ? partyManager.getOrCreate(player) : partyManager.get(player);
+        final Collection<Player> players = party == null ? Collections.singleton(player) : party.getOnlineMembers();
+ 
+        if (!ValidatorUtil.validate(validatorManager.getDuelSelfValidators(), player, party, players)) {
+            return true;
+        }
+
+        final Party targetParty = partyManager.isInParty(player) ? partyManager.getOrCreate(target) : partyManager.get(target);
         final Collection<Player> targetPlayers = targetParty == null ? Collections.singleton(target) : targetParty.getOnlineMembers();
 
         if (!ValidatorUtil.validate(validatorManager.getDuelTargetValidators(), new Pair<>(player, target), targetParty, targetPlayers)) {

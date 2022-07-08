@@ -424,6 +424,12 @@ public class DuelManager implements Loadable {
             final Location deadLocation = player.getEyeLocation().clone();
 
             plugin.doSyncAfter(() -> {
+                for (final Player p : match.getAllPlayers()) {
+                    final Party party = partyManager.get(p);
+                    if (party.size() <= 1)
+                        partyManager.remove(party);
+                }
+
                 if (arena.size() == 0) {
                     match.getAllPlayers().forEach(matchPlayer -> {
                         handleTie(matchPlayer, arena, match, false);

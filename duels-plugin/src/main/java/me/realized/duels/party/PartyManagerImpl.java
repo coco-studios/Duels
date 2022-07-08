@@ -1,11 +1,7 @@
 package me.realized.duels.party;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.config.Lang;
@@ -29,7 +25,7 @@ public class PartyManagerImpl implements Loadable, Listener {
     private final Map<UUID, Party> partyMap = new HashMap<>();
     private final List<Party> parties = new ArrayList<>();
     
-    private int autoDisbandTask;
+    private int autoKickTask;
 
     public PartyManagerImpl(final DuelsPlugin plugin) {
         this.plugin = plugin;
@@ -40,21 +36,37 @@ public class PartyManagerImpl implements Loadable, Listener {
 
     @Override
     public void handleLoad() {
-        if (config.getPartyAutoDisbandAfter() > 0) {
-            this.autoDisbandTask = plugin.doSyncRepeat(() -> { 
+        if (config.getPartyAutoKickAfter() > 0) {
+            this.autoKickTask = plugin.doSyncRepeat(() -> {
                 Iterator<Party> iterator = parties.iterator();
 
                 while (iterator.hasNext()) {
                     final Party party = iterator.next();
 
-                    if (party.getOwner().isOnline() || System.currentTimeMillis() - party.getOwner().getLastLogout() < (config.getPartyAutoDisbandAfter() * 60 * 1000L)) {
-                        continue;
-                    }
+                    for (final PartyMember member : new ArrayList<>(party.getMembers())) {
+                        if (!member.isOnline() && System.currentTimeMillis()-member.getLastLogout() >= (config.getPartyAutoKickAfter()*60*1000L)) {
+                            if (member.equals(party.getOwner())) {
+                                if (party.getOnlineMembers().size()-1 <= 0) {
+                                    new ArrayList<>(party.getMembers()).forEach(m -> remove(m, party));
+                                    party.setRemoved(true);
+                                    iterator.remove();
+                                    break;
+                                } else {
+                                    final PartyMember newOwner = party.getMembers().stream()
+                                            .filter(m -> m.isOnline() && !m.equals(party.getOwner()))
+                                            .iterator()
+                                                .next();
+                                    party.setOwner(newOwner.getPlayer());
+                                    remove(member, party);
 
-                    lang.sendMessage(party.getOnlineMembers(), "PARTY.auto-disband");
-                    party.setRemoved(true);
-                    party.getMembers().forEach(member -> partyMap.remove(member.getUuid()));
-                    iterator.remove();
+                                    lang.sendMessage(party.getOnlineMembers(), "PARTY.inactivity-kick-new-owner", "old_owner", member.getName(), "new_owner", party.getOwner().getName());
+                                }
+                            } else {
+                                remove(member, party);
+                                lang.sendMessage(party.getOnlineMembers(), "PARTY.inactivity-kick", "name", member.getName());
+                            }
+                        }
+                    }
                 }
             }, 0L, 20L * 60).getTaskId();
         }
@@ -62,7 +74,7 @@ public class PartyManagerImpl implements Loadable, Listener {
 
     @Override
     public void handleUnload() {
-        plugin.cancelTask(autoDisbandTask);
+        plugin.cancelTask(autoKickTask);
         invites.clear();
         parties.clear();
         partyMap.clear();
@@ -206,7 +218,7 @@ public class PartyManagerImpl implements Loadable, Listener {
         }
 
         event.setCancelled(true);
-        lang.sendMessage(damager, "ERROR.party.cannot-friendly-fire", "name", damaged.getName());
+//        lang.sendMessage(damager, "ERROR.party.cannot-friendly-fire", "name", damaged.getName());
     }
     
     @EventHandler

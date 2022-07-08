@@ -1,23 +1,20 @@
 package me.realized.duels.command.commands.party;
 
-import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.Permissions;
 import me.realized.duels.command.BaseCommand;
-import me.realized.duels.command.commands.party.subcommands.AcceptCommand;
-import me.realized.duels.command.commands.party.subcommands.DisbandCommand;
-import me.realized.duels.command.commands.party.subcommands.FriendlyfireCommand;
-import me.realized.duels.command.commands.party.subcommands.KickCommand;
-import me.realized.duels.command.commands.party.subcommands.LeaveCommand;
-import me.realized.duels.command.commands.party.subcommands.ListCommand;
-import me.realized.duels.command.commands.party.subcommands.ToggleCommand;
-import me.realized.duels.command.commands.party.subcommands.TransferCommand;
+import me.realized.duels.command.commands.party.subcommands.*;
 import me.realized.duels.data.UserData;
 import me.realized.duels.party.Party;
+import me.realized.duels.util.TextBuilder;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class PartyCommand extends BaseCommand {
     
@@ -95,7 +92,13 @@ public class PartyCommand extends BaseCommand {
         }
 
         lang.sendMessage(party.getOnlineMembers(), "COMMAND.party.invite.send.members", "owner", player.getName(), "name", target.getName());
-        lang.sendMessage(target, "COMMAND.party.invite.send.receiver", "name", sender.getName());
+//        lang.sendMessage(target, "COMMAND.party.invite.send.receiver", "name", sender.getName());
+        TextBuilder
+                .of(lang.getMessage("COMMAND.party.invite.send.receiver", "name", sender.getName()))
+                .add(lang.getMessage("COMMAND.party.invite.send.clickable-text.accept.text"))
+                    .setClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept "+sender.getName())
+                    .setHoverEvent(HoverEvent.Action.SHOW_TEXT, lang.getMessage("COMMAND.party.invite.send.clickable-text.accept.hover-text"))
+                .send(target);
         return true;
     }
 
