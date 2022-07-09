@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import me.realized.duels.DuelsPlugin;
+import me.realized.duels.Permissions;
 import me.realized.duels.arena.ArenaManagerImpl;
 import me.realized.duels.betting.BettingManager;
 import me.realized.duels.config.Config;

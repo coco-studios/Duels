@@ -37,12 +37,14 @@ import me.realized.duels.util.PlayerUtil;
 import me.realized.duels.util.compat.CompatUtil;
 import me.realized.duels.util.compat.Titles;
 import me.realized.duels.util.inventory.InventoryUtil;
+import me.realized.duels.util.inventory.ItemBuilder;
 import me.realized.duels.util.validator.ValidatorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -58,6 +60,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
@@ -296,8 +299,35 @@ public class DuelManager implements Loadable {
         }
 
         final DuelMatch match = arena.startMatch(kit, items, settings, source);
-        addPlayers(first, match, arena, kit, arena.getPosition(1));
-        addPlayers(second, match, arena, kit, arena.getPosition(2));
+
+        if (config.isPartyColorCoded() && (first.size() > 1 || second.size() > 1)) { // Is a party fight
+            final ItemStack markerBlue = ItemBuilder
+                    .of(Material.LIGHT_BLUE_GLAZED_TERRACOTTA)
+                    .name(lang.getMessage("PARTY.colour-coding.blue.item-name"))
+                    .lore(lang.getMessage("PARTY.colour-coding.blue.item-lore").split("\n"))
+                    .enchant(Enchantment.BINDING_CURSE, 1)
+                    .editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ENCHANTS))
+                    .build();
+            final ItemStack markerRed = ItemBuilder
+                    .of(Material.RED_GLAZED_TERRACOTTA)
+                    .name(lang.getMessage("PARTY.colour-coding.red.item-name"))
+                    .lore(lang.getMessage("PARTY.colour-coding.red.item-lore").split("\n"))
+                    .enchant(Enchantment.BINDING_CURSE, 1)
+                    .editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ENCHANTS))
+                    .build();
+            final ItemStack originalHelmet = kit.getItems().get("ARMOR").get(3);
+
+            kit.getItems().get("ARMOR").put(3, markerBlue);
+            addPlayers(first, match, arena, kit, arena.getPosition(1));
+
+            kit.getItems().get("ARMOR").put(3, markerRed);
+            addPlayers(second, match, arena, kit, arena.getPosition(2));
+
+            kit.getItems().get("ARMOR").put(3, originalHelmet);
+        } else {
+            addPlayers(first, match, arena, kit, arena.getPosition(1));
+            addPlayers(second, match, arena, kit, arena.getPosition(2));
+        }
 
         if (config.isCdEnabled()) {
             arena.startCountdown();
@@ -426,7 +456,7 @@ public class DuelManager implements Loadable {
             plugin.doSyncAfter(() -> {
                 for (final Player p : match.getAllPlayers()) {
                     final Party party = partyManager.get(p);
-                    if (party.size() <= 1)
+                    if (party != null && party.size() <= 1)
                         partyManager.remove(party);
                 }
 

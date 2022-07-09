@@ -24,7 +24,6 @@ import me.realized.duels.party.Party;
 import me.realized.duels.queue.Queue;
 
 public class PartyDuelMatch extends DuelMatch {
-
     @Getter
     private final Map<Player, Party> playerToParty = new HashMap<>();
     @Getter
@@ -32,7 +31,7 @@ public class PartyDuelMatch extends DuelMatch {
     private final Map<Party, Integer> alivePlayers = new HashMap<>();
 
     public PartyDuelMatch(final DuelsPlugin plugin, final ArenaImpl arena, final KitImpl kit, final Map<UUID, List<ItemStack>> items, final int bet, final Queue source) {
-        super(plugin,arena, kit, items, bet, source);
+        super(plugin, arena, kit, items, bet, source);
     }
 
     public Set<Party> getAllParties() {

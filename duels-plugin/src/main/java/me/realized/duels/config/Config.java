@@ -163,6 +163,8 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     private int partyMaxSize;
     @Getter
     private boolean partySameSizeOnly;
+    @Getter
+    private boolean partyColorCoded;
 
     @Getter
     private List<String> queueBlacklistedCommands;
@@ -356,6 +358,7 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
         partyAutoKickAfter = configuration.getInt("party.auto-kick-after", 10);
         partyMaxSize = configuration.getInt("party.max-size", 10);
         partySameSizeOnly = configuration.getBoolean("party.same-size-only", true);
+        partyColorCoded = configuration.getBoolean("party.color-coding", false);
 
         queueBlacklistedCommands = configuration.getStringList("queue.blacklisted-commands");
 

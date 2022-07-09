@@ -389,6 +389,10 @@ party:
   # default: true
   same-size-only: true
 
+  # If set to 'true', the teams will be designated 'red' and 'blue' in a duel,
+  # and members of those teams will get their respective color marker on their head.
+  # default: true
+  color-coding: false
 
 queue:
   # List of commands to block while in a queue.

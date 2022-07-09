@@ -509,6 +509,17 @@ PARTY:
   - '{LINE}'
   - '{PREFIX} &7The party owner &f%old_owner% &7was kicked from the party for inactivity, new owner: &f%new_owner%&7.'
   - '{LINE}'
+  colour-coding:
+    blue:
+      item-name: '&9&l[BLUE TEAM]'
+      item-lore:
+        - '&8You are on team &9&lBLUE&8,'
+        - 'kill team &c&lRED&8.'
+    red:
+      item-name: '&c&l[RED TEAM]'
+      item-lore:
+        - '&8You are on team &c&lRED&8,'
+        - 'kill team &9&lBLUE&8.'
 
 
 QUEUE:
