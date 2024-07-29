@@ -5,13 +5,7 @@ import java.util.List;
 import me.realized.duels.DuelsPlugin;
 import me.realized.duels.config.Config;
 import me.realized.duels.gui.BaseButton;
-import me.realized.duels.gui.settings.buttons.ArenaSelectButton;
-import me.realized.duels.gui.settings.buttons.CancelButton;
-import me.realized.duels.gui.settings.buttons.ItemBettingButton;
-import me.realized.duels.gui.settings.buttons.KitSelectButton;
-import me.realized.duels.gui.settings.buttons.OwnInventoryButton;
-import me.realized.duels.gui.settings.buttons.RequestDetailsButton;
-import me.realized.duels.gui.settings.buttons.RequestSendButton;
+import me.realized.duels.gui.settings.buttons.*;
 import me.realized.duels.util.compat.Items;
 import me.realized.duels.util.gui.SinglePageGui;
 import me.realized.duels.util.inventory.Slots;
@@ -51,6 +45,10 @@ public class SettingsGui extends SinglePageGui<DuelsPlugin> {
 
         if (config.isItemBettingEnabled()) {
             buttons.add(new ItemBettingButton(plugin));
+        }
+
+        if (config.isToggleSpectatingEnabled()) {
+            buttons.add(new ToggleSpectatingButton(plugin));
         }
 
         if (!buttons.isEmpty()) {

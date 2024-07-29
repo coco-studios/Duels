@@ -488,7 +488,10 @@ DUEL:
     tie: '{PREFIX} &7Tie Game!'
     plugin-disable: '{PREFIX} &cPlugin is disabling! Ending match automatically.'
     opponent-defeat: '{PREFIX} &f%winner% &a(%winner_rating%) (+%change%) &7defeated &f%loser% &c(%loser_rating%) (-%change%) &7with kit &3%kit% &7on arena &e%arena%&7.'
-    party-opponent-defeat: '{PREFIX} &f%winners% &7defeated &f%losers% &7with kit &3%kit% &7on arena &e%arena%&7.'
+    party-opponent-defeat:
+      message: '{PREFIX} &f%winners% &7defeated &f%losers% &7with kit &3%kit% &7on arena &e%arena%&7.'
+      winner-health: ' &d%health%❤'
+      winner-delimiter: '&7, &f'
   inventories:
     message: '&7Inventories (click on the name to view): '
     name-color: '&b'
@@ -599,6 +602,15 @@ GUI:
         lore-no-permission:
         - '&cYou do not have permission to'
         - '&cuse this option.'
+      allow-spectating:
+        name: '&9Spectating'
+        lore:
+          - '&7Spectating: &r%allow_spectating%'
+          - ' '
+          - '&aClick to Toggle Spectators!'
+        lore-no-permission:
+          - '&cYou do not have permission to'
+          - '&cuse this option.'
       send:
         name: '&a&lSEND REQUEST'
       cancel:

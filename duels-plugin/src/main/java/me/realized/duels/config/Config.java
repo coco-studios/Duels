@@ -94,6 +94,10 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     @Getter
     private boolean moneyBettingUsePermission;
     @Getter
+    private boolean toggleSpectatingEnabled;
+    @Getter
+    private boolean toggleSpectatingPermission;
+    @Getter
     private int expiration;
 
     @Getter
@@ -137,7 +141,9 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
     @Getter
     private boolean spawnFirework;
     @Getter
-    private boolean arenaOnlyEndMessage;
+    private boolean arenaOnlyEndMessageOneOnOne;
+    @Getter
+    private boolean arenaOnlyEndMessageParty;
     @Getter
     private boolean displayInventories;
     @Getter
@@ -322,6 +328,8 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
         itemBettingUsePermission = configuration.getBoolean("request.item-betting.use-permission", false);
         moneyBettingEnabled = configuration.getBoolean("request.money-betting.enabled", true);
         moneyBettingUsePermission = configuration.getBoolean("request.money-betting.use-permission", false);
+        toggleSpectatingEnabled = configuration.getBoolean("request.allow-spectating.enabled", true);
+        toggleSpectatingPermission = configuration.getBoolean("request.allow-spectating.use-permission", false);
         expiration = Math.max(configuration.getInt("request.expiration", 30), 0);
 
         maxDuration = configuration.getInt("duel.match.max-duration", -1);
@@ -344,7 +352,8 @@ public class Config extends AbstractConfiguration<DuelsPlugin> {
         teleportToLastLocation = configuration.getBoolean("duel.teleport-to-last-location", false);
         teleportDelay = configuration.getInt("duel.teleport-delay", 5);
         spawnFirework = configuration.getBoolean("duel.spawn-firework", true);
-        arenaOnlyEndMessage = configuration.getBoolean("duel.arena-only-end-message", false);
+        arenaOnlyEndMessageOneOnOne = configuration.getBoolean("duel.arena-only-end-message.one-on-one", true);
+        arenaOnlyEndMessageParty = configuration.getBoolean("duel.arena-only-end-message.party", false);
         displayInventories = configuration.getBoolean("duel.display-inventories", true);
         preventItemDrop = configuration.getBoolean("duel.prevent-item-drop", false);
         preventItemPickup = configuration.getBoolean("duel.prevent-item-pickup", true);

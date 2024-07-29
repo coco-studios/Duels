@@ -154,6 +154,15 @@ request:
     # default: false
     use-permission: false
 
+  allow-spectating:
+    # If set to 'true', players will be able to toggle whether other players can spectate the duel with '/spectate [player]'.
+    # default: true
+    enabled: true
+
+    # If set to 'true', players without the permission 'duels.use.allow-spectating' will not be able to toggle whether spectating is allowed.
+    # default: false
+    use-permission: false
+
   # Request expiration, in seconds.
   # default: 30
   expiration: 30
@@ -253,7 +262,9 @@ duel:
 
   # If set to 'true', the duel end message will be sent only to the players in duel & spectators of the duel.
   # default: false
-  arena-only-end-message: false
+  arena-only-end-message:
+    one-on-one: true
+    party: false
 
   # If set to 'true', players will be sent a clickable message that displays the inventories at the end of a duel.
   # default: true

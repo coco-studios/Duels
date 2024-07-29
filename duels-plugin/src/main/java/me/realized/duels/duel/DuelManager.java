@@ -301,15 +301,13 @@ public class DuelManager implements Loadable {
         final DuelMatch match = arena.startMatch(kit, items, settings, source);
 
         if (config.isPartyColorCoded() && (first.size() > 1 || second.size() > 1)) { // Is a party fight
-            final ItemStack markerBlue = ItemBuilder
-                    .of(Material.LIGHT_BLUE_GLAZED_TERRACOTTA)
+            final ItemStack markerBlue = ItemBuilder.of(Material.LIGHT_BLUE_STAINED_GLASS)
                     .name(lang.getMessage("PARTY.colour-coding.blue.item-name"))
                     .lore(lang.getMessage("PARTY.colour-coding.blue.item-lore").split("\n"))
                     .enchant(Enchantment.BINDING_CURSE, 1)
                     .editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ENCHANTS))
                     .build();
-            final ItemStack markerRed = ItemBuilder
-                    .of(Material.RED_GLAZED_TERRACOTTA)
+            final ItemStack markerRed = ItemBuilder.of(Material.RED_STAINED_GLASS)
                     .name(lang.getMessage("PARTY.colour-coding.red.item-name"))
                     .lore(lang.getMessage("PARTY.colour-coding.red.item-lore").split("\n"))
                     .enchant(Enchantment.BINDING_CURSE, 1)
@@ -317,10 +315,10 @@ public class DuelManager implements Loadable {
                     .build();
             final ItemStack originalHelmet = kit.getItems().get("ARMOR").get(3);
 
-            kit.getItems().get("ARMOR").put(3, markerBlue);
+            kit.getItems().get("ARMOR").put(1, markerBlue);
             addPlayers(first, match, arena, kit, arena.getPosition(1));
 
-            kit.getItems().get("ARMOR").put(3, markerRed);
+            kit.getItems().get("ARMOR").put(1, markerRed);
             addPlayers(second, match, arena, kit, arena.getPosition(2));
 
             kit.getItems().get("ARMOR").put(3, originalHelmet);

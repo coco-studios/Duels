@@ -39,6 +39,9 @@ public class Settings {
     @Setter
     private boolean itemBetting;
     @Getter
+    @Setter
+    private boolean allowSpectating;
+    @Getter
     private boolean ownInventory;
     @Getter
     private Map<UUID, CachedInfo> cache = new HashMap<>();
@@ -62,6 +65,7 @@ public class Settings {
         arena = null;
         bet = 0;
         itemBetting = false;
+        allowSpectating = true;
         ownInventory = !plugin.getConfiguration().isKitSelectingEnabled();
         clearCache();
     }

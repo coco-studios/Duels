@@ -237,7 +237,8 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
         final String kitName = match.getKit() != null ? match.getKit().getName() : lang.getMessage("GENERAL.none");
         final String message;
 
-        if (!(match instanceof PartyDuelMatch)) {
+        final boolean isPartyMatch = match instanceof PartyDuelMatch;
+        if (!isPartyMatch) {
             final long duration = System.currentTimeMillis() - match.getStart();
             final long time = GREGORIAN_CALENDAR.getTimeInMillis();
             final Player loser = match.getArena().getOpponent(winner);
@@ -280,8 +281,17 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
             final PartyDuelMatch partyMatch = (PartyDuelMatch) match;
             final Party winnerParty = partyMatch.getPlayerToParty().get(winner);
             final Party loserParty = match.getArena().getOpponent(winnerParty);
-            message = lang.getMessage("DUEL.on-end.party-opponent-defeat",
-                "winners", StringUtil.join(partyMatch.getNames(winnerParty), ", "),
+
+            final String formatted = winners.stream()
+                    .map(w -> {
+                        final double health = Math.ceil(w.getHealth()) * 0.5;
+                        return lang.getMessage("DUEL.on-end.party-opponent-defeat.winner-health", "health", health)
+                                + lang.getMessage("DUEL.on-end.party-opponent-defeat.winner-delimiter");
+                    })
+                    .collect(Collectors.joining());
+
+            message = lang.getMessage("DUEL.on-end.party-opponent-defeat.message",
+                "winners", formatted,
                 "losers", StringUtil.join(partyMatch.getNames(loserParty), ", "),
                 "kit", kitName,
                 "arena", match.getArena().getName()
@@ -292,7 +302,7 @@ public class UserManagerImpl implements Loadable, Listener, UserManager {
             return;
         }
 
-        if (config.isArenaOnlyEndMessage()) {
+        if ((isPartyMatch && config.isArenaOnlyEndMessageParty()) || (!isPartyMatch && config.isArenaOnlyEndMessageOneOnOne())) {
             match.getArena().broadcast(message);
         } else {
             Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));

@@ -2,8 +2,10 @@ package me.realized.duels.hook.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.realized.duels.DuelsPlugin;
+import me.realized.duels.arena.ArenaImpl;
 import me.realized.duels.data.UserData;
 import me.realized.duels.data.UserManagerImpl;
+import me.realized.duels.duel.DuelManager;
 import me.realized.duels.util.hook.PluginHook;
 import org.bukkit.entity.Player;
 
@@ -38,6 +40,15 @@ public class PlaceholderHook extends PluginHook<DuelsPlugin> {
 
         @Override
         public String onPlaceholderRequest(final Player player, final String identifier) {
+            switch(identifier) {
+                case "duels":
+                    final long duels = DuelsPlugin.getInstance().getArenaManager().getArenasImpl().stream()
+                            .filter(ArenaImpl::isUsed)
+                            .count();
+                    return Long.toString(duels);
+            }
+
+            // Relational placeholders from this point on; player required
             if (player == null) {
                 return "Player is required";
             }
